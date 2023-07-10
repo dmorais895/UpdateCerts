@@ -1,7 +1,8 @@
 .vscode/
-autoridades_certificadoras
-autoridades_certificadoras/*
 venv
 venv/*
 .venv
 .venv/*
+*.zip
+*.zip.*
+*.hash.*
