@@ -69,7 +69,7 @@ def get_certs_info(**kwargs):
         return 1
 
 
-def convert_base64_to_file(**kwargs):
+def generate_files(**kwargs):
 
     autoridades_certificadoras_dir = BASE_DIR + \
         '/autoridades_certificadoras/' + f"{kwargs['cert_type']}"
@@ -101,7 +101,7 @@ if __name__ == "__main__":
         print(f"Updating {cert_type.capitalize()}.....")
 
         if verify_update(update_info, cert_type=cert_type):
-            convert_base64_to_file(info=get_certs_info(
+            generate_files(info=get_certs_info(
                 cert_type=cert_type), update_info=update_info, cert_type=cert_type)
             with open('last_update.txt', 'w+') as f:
                 f.write(get_date())
