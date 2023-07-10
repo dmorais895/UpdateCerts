@@ -77,22 +77,26 @@ def get_certs_info(**kwargs):
 
 def convert_base64_to_file(**kwargs):
 
-    autoridades_certificadoras_dir = BASE_DIR + '/autoridades_certificadoras'
+
+    autoridades_certificadoras_dir = BASE_DIR + '/autoridades_certificadoras/' + f"{kwargs['cert_type']}"
     file_base_name = f"{autoridades_certificadoras_dir}/{kwargs['info']['result']['fileName']}"
-    print(kwargs['update_info']['result']['checksumIntermediarias'])
-    with open(f"{file_base_name}", "wb") as _zip: 
+    print(kwargs['update_info']['result']['checksum'+f'{kwargs["cert_type"].capitalize()}'])
+
+    with open(f"{file_base_name}", "wb") as _zip:
         _zip.write(base64.b64decode(kwargs['info']['result']['contentBase64']))
 
-    files_sufix = ['.hash', '.hash.codec', '.hash.signed', '.hash.signed.algorithm']
-    files = [ f"{file_base_name}" + file_sufix for file_sufix in files_sufix]
+    files_sufix = ['.hash', '.hash.codec',
+                   '.hash.signed', '.hash.signed.algorithm']
+    files = [f"{file_base_name}" + file_sufix for file_sufix in files_sufix]
 
     print(files)
 
-    # with open(f"{file_base_name}.hash", "w+") as _zipHash, open(f"{file_base_name}.hash.codec", "w+") as _zipCodec:
-    #     _zipHash.write(kwargs['update_info']['result']
-    #                    ['checksumIntermediarias'])
-    #     _zipCodec.write(kwargs['info']['result']['checksumCodec'])
-    # # print(kwargs['info']['result']['fileName'])
+    with open(f"{files[0]}", "w+") as _zipHash, open(f"{files[1]}", "w+") as _zipCodec, open(f"{files[2]}", "w+") as _zipSign, open(f"{files[3]}", "w+") as _zipAlg:
+        _zipHash.write(kwargs['update_info']['result']
+                       ['checksum'+f'{kwargs["cert_type"].capitalize()}'])
+        _zipCodec.write(kwargs['info']['result']['checksumCodec'])
+        _zipSign.write(kwargs['info']['result']['signedChecksum'])
+        _zipAlg.write(kwargs['info']['result']['signatureAlgorithm'])
 
 
 if __name__ == "__main__":
@@ -101,10 +105,8 @@ if __name__ == "__main__":
 
     update_info = get_today_info()
 
-    if verify_update(update_info, cert_type='intermediarias'):
-        info = get_certs_info(cert_type='intermediarias')
-        convert_base64_to_file(info=info, update_info=update_info)
-        # print(info)
+    if verify_update(update_info, cert_type='confiaveis'):
+        info = get_certs_info(cert_type='confiaveis')
+        convert_base64_to_file(info=info, update_info=update_info, cert_type='confiaveis')
     else:
         print("Intermediarias not updated")
-    # print(os.path.dirname(__file__))
