@@ -1,0 +1,1 @@
+# Diretório com certificados das ACs
