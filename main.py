@@ -18,9 +18,7 @@ formatter = logging.Formatter(
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
-logger.debug('often makes a very good meal of %s', 'visiting tourists')
 #################################################################
-
 
 BASE_URL = 'http://gateway.prd.cnj.cloud/autoridades-certificadoras'
 BASE_DIR = os.path.dirname(__file__)
